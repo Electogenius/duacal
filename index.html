@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Duacal</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div id="main">
+		<div id="box">
+			<canvas id="canv" width="1024" height="192"></canvas>
+			<table>
+				<tr id="row1">
+				</tr>
+				<tr id="row2"></tr>
+				<tr id="row3">
+					<td>1</td>
+					<td>2</td>
+					<td>3</td>
+				</tr>
+				<tr id="row4">
+					<td>4</td>
+					<td>5</td>
+					<td>6</td>
+				</tr>
+				<tr id="row5">
+					<td>7</td>
+					<td>8</td>
+					<td>9</td>
+				</tr>
+				<tr id="row6">
+					<td>.</td>
+					<td>0</td>
+					<td>Ans</td>
+					<td></td>
+					<td>=</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<script>
+		const FONTSIZE = 150;
+		let c = canv.getContext("2d")
+		
+		window.onload = ()=>{
+			c.font = `300 ${FONTSIZE}px handjet`
+			c.fillText("while True:",30,FONTSIZE)
+		}
+	</script>
+</body>
+
+</html>

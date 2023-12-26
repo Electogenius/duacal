@@ -1,0 +1,31 @@
+@font-face {
+	font-family: handjet;
+	src: url("./font/Handjet[ELGR\,ELSH\,wght].woff2");
+}
+
+body{
+	background-color: #000;
+	color: #fff;
+	box-sizing: border-box;
+	font: 300 3em handjet;
+}
+canvas{
+	background-color: olivedrab;
+	width: 80%;
+	display: block;
+}
+#main{
+	text-align: center;
+	padding: 30px;
+}
+#box{
+	text-align: center;
+	background-color: #555;
+	display: inline-block;
+	width: 100%;
+	height: 90%;
+}
+td{
+	background-color: #333;
+	padding: 5px;
+}
