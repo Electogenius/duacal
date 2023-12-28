@@ -1,9 +1,12 @@
-const SQUARED = '²'
+const REPLACE = {
+	'²': "^2",
+	'π': "pi"
+}
 
-const test = "sin 1"
+const test = "x + π sin30"
 
-function tokenize(exp) {
-	const alpha = /\p{Ll}/
+function tokenize(exp, syntaxerr) {
+	const alpha = /^[a-zA-Z]+$/
 	let tokens = []
 	let chars = exp.split``
 	while (chars.length) {
@@ -38,8 +41,18 @@ function tokenize(exp) {
 				t.value+=rem()
 			}
 			tokens.push(t)
+		}else if(char() in REPLACE){
+			const to = REPLACE[rem()].split``
+			chars.unshift(...to)
+		}else{
+			syntaxerr("invalid char "+rem())
+			return
 		}
 	}
 	return tokens
 }
-console.log(tokenize(test))
+
+const log = x=>console.log(x)
+try{
+console.log(tokenize(test, log))
+}catch(e){log(e)}
