@@ -1,42 +1,50 @@
-const REPLACE = {
-	'²': "^2",
-	'π': "pi"
-}
-const CONSTANTS = ['pi','e']
+//
+// a simple parser and tokenizer
+//
 
-const test = "ln 2"
+const REPLACE = {
+	'²': "^2 ",
+	'π': "pi "
+}
+const CONSTANTS = ['pi','e','i']
+
+const test = "6.3e"
 
 function tokenize(exp, syntaxerr) {
 	const alpha = /^[a-zA-Z]+$/
+	const number = /^\d*(\.\d*)?(e(\+|\-)?\d*)?$/
+
 	let tokens = []
 	let chars = exp.split``
+
 	while (chars.length) {
 		let char = () => chars[0]
 		let rem = () => chars.shift()
 		if (char() == ' ') {
 			rem()
-		} else if (/[0-9\.]/.test(char())) {
+		} else if (/[0-9\.]/.test(char())) { 	//num
 			let t = { value: '', type: 'number' }
-			while (chars.length && /^\d*(\.\d*)?$/.test(t.value + char())) {
+			while (chars.length && number.test(t.value + char())) {
 				t.value += rem()
 			}
 			tokens.push(t)
-		} else if (/[\+\^\/\*\-]/.test(char())) {
+		} else if (/[\+\^\/\*\-]/.test(char())) { // operator
 			tokens.push({
 				value: rem(),
 				type: 'operator'
 			})
-		} else if (char() == '(') {
+		} else if (char() == '(') { 			// lparen
 			tokens.push({
 				value: rem(),
 				type: 'lparen'
 			})
-		} else if (char() == ')') {
+		} else if (char() == ')') {				// rparen
 			tokens.push({
 				value: rem(),
 				type: 'rparen'
 			})
-		} else if (alpha.test(char())) {
+		} else if (alpha.test(char())) {		//ident
+
 			let t = { value: '', type: 'ident' }
 			while (chars.length && alpha.test(t.value + char())) {
 				t.value += rem()
@@ -54,7 +62,7 @@ function tokenize(exp, syntaxerr) {
 }
 
 function parser(tok, parseErr) {
-	let last = () => tok[0] || { value: '', type: '' }
+	let last = (x=0) => tok[x] || { value: '', type: '' }
 	let rem = () => tok.shift()
 	function additive() {
 		let left = multiplicative()
@@ -90,7 +98,7 @@ function parser(tok, parseErr) {
 			if (last().type == 'lparen') {
 				if (CONSTANTS.includes(word.value)){
 					//TODO: fix
-					parseErr("No implicit multiplication")
+					parseErr("No implicit multiplication with brackets")
 				}else{
 					return {
 						type: 'fn',
@@ -107,6 +115,7 @@ function parser(tok, parseErr) {
 				}
 			} else {
 				// plain ol' constant
+				log(word)
 				return {
 					type: 'const',
 					name: word.value
@@ -117,11 +126,26 @@ function parser(tok, parseErr) {
 			const expr = additive()
 			rem()
 			return (expr)
+		}else{
+			log(last(1).type)
+			if(last(1).type == 'ident' && CONSTANTS.includes(last(1).value)){
+				// bracketless implicit multiplication (eg 2pi)
+				const v = {
+					left: rem(),
+					oper: { value: "*", type: "operator" },
+					right: last(),
+					type: "arithm"
+				}
+				rem()
+				return v
+			}
+			return rem()
 		}
-		else return rem()
 	}
 	return additive()
 }
+
+//// tests ////
 
 const log = x => console.log(x)
 try {
