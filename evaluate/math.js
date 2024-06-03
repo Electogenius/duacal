@@ -10,6 +10,9 @@ class Num{
 	add(b){
 		return num(this.real+b.real, this.imag+b.imag)
 	}
+	sub(b) {
+        return num(this.real - b.real, this.imag - b.imag)
+    }
 	mult(x){
 		let a = this.real,
 		b = this.imag,
@@ -30,11 +33,14 @@ class Num{
 		let im = (b*c - a*d)/(c*c + d*d)
 		return num(re, im)
 	}
+	inv(){
+	    return num(1).div(this)
+	}
 	mod(){
 		return num((this.real**2+this.imag**2)**.5)
 	}
 	arg(){
-		return num(Math.atan(this.imag/this.real))
+		return num(Math.atan2(this.imag, this.real))
 	}
 	exp(x){
 		// oh god
@@ -53,7 +59,7 @@ class Num{
 		const z = num(Num.cleanInt(this.real),Num.cleanInt(this.imag))
 		if(!z.imag)
 			return ""+z.real
-		return `${z.real} + i*${z.imag}`
+		return `${z.real} + i${z.imag}`
 	}
 
 	static e_to_the_i_times(n){ // assert n.imag == 0
