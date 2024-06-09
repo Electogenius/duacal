@@ -8,7 +8,7 @@ const REPLACE = {
 }
 const CONSTANTS = ['pi', 'e', 'i']
 
-const test = "i(2+1)"
+const test = "2pi + 2*pi"
 
 function tokenize(exp, syntaxerr) {
     const alpha = /^[a-zA-Z]+$/
@@ -140,7 +140,20 @@ function parser(tok, parseErr) {
                 }
             } else {
                 // plain ol' constant
-                log(word)
+                if (last().type == 'number') {
+                    // bracketless implicit multiplication (eg 2pi)
+                    word.type='const'
+                    word.name=word.value
+                    const v = {
+                        left: rem(),
+                        oper: { value: "*", type: "operator" },
+                        right: word,
+                        type: "arithm"
+                    }
+                    log(v)
+                    rem()
+                    return v
+                }
                 return {
                     type: 'const',
                     name: word.value
@@ -163,15 +176,19 @@ function parser(tok, parseErr) {
                 type: "arithm"
             }
         } else {
-            log(last(1).type)
             if (last(1).type == 'ident' && CONSTANTS.includes(last(1).value)) {
                 // bracketless implicit multiplication (eg 2pi)
+                let z = rem()
+                let w = last()
+                w.type='const'
+                w.name=w.value
                 const v = {
-                    left: rem(),
+                    left: z,
                     oper: { value: "*", type: "operator" },
-                    right: last(),
+                    right: w,
                     type: "arithm"
                 }
+                log(v)
                 rem()
                 return v
             }
