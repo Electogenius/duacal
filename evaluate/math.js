@@ -59,7 +59,7 @@ class Num{
 		const z = num(Num.cleanInt(this.real),Num.cleanInt(this.imag))
 		if(!z.imag)
 			return ""+z.real
-		return `${z.real} + i${z.imag}`
+		return `${z.real} + ${z.imag}i`
 	}
 
 	static e_to_the_i_times(n){ // assert n.imag == 0
