@@ -11,9 +11,9 @@
 <body>
 	<div id="main">
 		<div id="box">
-			<canvas id="canv" width="1024" height="192"></canvas>
-		    <input id="tare" class="hide"></input>
-			<table>
+		    <input id="tare" autocapitalize="off"></input>
+		    <div id="output"></div>
+			<table style="display:none">
 				<tr id="row1">
 				</tr>
 				<tr id="row2"></tr>
@@ -44,25 +44,18 @@
 	</div>
 
 	<script>
-		const FONTSIZE = 75;
-		let c = canv.getContext("2d")
-		
-		window.onload = ()=>{
-			c.font = `300 ${FONTSIZE}px handjet`
-			c.fillText("sin(30°)",30,FONTSIZE)
-		}
-		
-		canv.onclick = ()=>tare.focus()
-		tare.onkeyup=event=>{
-		    c.clearRect(0,0,1000,1000)
-		    c.fillText(tare.value,30,FONTSIZE)
+		tare.onkeydown=event=>{
 		    if(event.key=="Enter")
 		        calc()
 		}
+		output.onclick = ()=>tare.value = output.innerText
 		function calc(){
+		    try{
 		    let val = evaluate(parser(tokenize(tare.value, log), log)).str()
-		    tare.value = val
-		    tare.onkeyup({})
+		    output.innerText = val
+		    }catch(e){
+		        output.innerText = "Err"
+		    }
 		}
 	</script>
 	<script src="evaluate/math.js" type="text/javascript" charset="utf-8"></script>

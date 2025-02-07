@@ -1,3 +1,5 @@
+*{box-sizing: border-box;font: 50px handjet;}
+
 @font-face {
 	font-family: handjet;
 	src: url("./font/Handjet[ELGR\,ELSH\,wght].woff2");
@@ -7,7 +9,6 @@ body{
 	background-color: #000;
 	color: #fff;
 	box-sizing: border-box;
-	font: 300 3em handjet;
 }
 canvas{
 	background-color: olivedrab;
@@ -34,4 +35,19 @@ td{
     left: 30px;top:30px;
     opacity: 0.01;
     z-index:-50;
+}
+
+#tare{
+    width: 100%;
+    background-color: olivedrab;
+    height: 1.5em;
+    padding:10px;
+    outline: none !important;
+    caret-color: black;
+}
+
+#output{
+    background: olivedrab;
+    padding: 10px;
+    color:black;
 }
