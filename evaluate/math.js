@@ -71,6 +71,8 @@ class Num{
 	static e = new Num(Math.E,0)
 	static i = new Num(0,1)
 	static pi = new Num(Math.PI,0)
+	static deg = new Num(Math.PI/180,0)
+	static rad = new Num(180/Math.PI,0)
 
 	/// Gets rid of floating point errors (not recommended)
 	static cleanInt(n){ // where n is a regular integer, not a Num

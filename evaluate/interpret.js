@@ -6,7 +6,7 @@ const REPLACE = {
     '²': "^2 ",
     'π': "pi "
 }
-const CONSTANTS = ['pi', 'e', 'i']
+const CONSTANTS = ['pi', 'e', 'i', 'deg', 'rad', 'Ans']
 
 const test = "2pi + 2*pi"
 
