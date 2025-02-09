@@ -115,16 +115,20 @@ function parser(tok, parseErr) {
             let word = rem()
             if (last().type == 'lparen') {
                 if (CONSTANTS.includes(word.value)) {
+                    // implicit bracketed multiplication with const on left (eg pi(2))
                     rem()
+                    log(1)
                     const expr = additive()
+                    log(expr)
                     rem()
                     return {
-                        left: word,
+                        left: { name: word.value, type: "const" },
                         oper: { value: "*", type: "operator" },
                         right: expr,
                         type: "arithm"
                     }
                 } else {
+                    // function call
                     return {
                         type: 'fn',
                         name: word.value,
@@ -142,8 +146,8 @@ function parser(tok, parseErr) {
                 // plain ol' constant
                 if (last().type == 'number') {
                     // bracketless implicit multiplication (eg 2pi)
-                    word.type='const'
-                    word.name=word.value
+                    word.type = 'const'
+                    word.name = word.value
                     const v = {
                         left: rem(),
                         oper: { value: "*", type: "operator" },
@@ -165,7 +169,7 @@ function parser(tok, parseErr) {
             rem()
             return (expr)
         } else if (last().value == '+' || last().value == '-') {
-            log(33)
+            // unary
             return {
                 left: {
                     type: 'number',
@@ -176,12 +180,13 @@ function parser(tok, parseErr) {
                 type: "arithm"
             }
         } else {
+            // number i guess
             if (last(1).type == 'ident' && CONSTANTS.includes(last(1).value)) {
                 // bracketless implicit multiplication (eg 2pi)
                 let z = rem()
                 let w = last()
-                w.type='const'
-                w.name=w.value
+                w.type = 'const'
+                w.name = w.value
                 const v = {
                     left: z,
                     oper: { value: "*", type: "operator" },
@@ -191,16 +196,32 @@ function parser(tok, parseErr) {
                 log(v)
                 rem()
                 return v
+            } else if (last(1).type == "lparen") {
+                // implicit bracketed mult with lhs as number (eg 2(1 + 1))
+                let lhs = rem()
+                rem()
+                let rhs = additive()
+                rem()
+                return {
+                    left: lhs,
+                    oper: { value: "*", type: "operator" },
+                    right: rhs,
+                    type: "arithm"
+                }
             }
             return rem()
         }
     }
-    return additive()
+    const result = additive()
+    if(tok.length > 0) parseErr("Expected end of expression, found "+tok[0].value)
+    return result
 }
 
 //// tests ////
 
-const log = x => console.log(x)
-try {
+//const log = x => console.log(x)
+const log = x => {}
+
+/*try {
     console.log(parser(tokenize(test, log), log))
-} catch (e) { log(e) }
+} catch (e) { log(e) }*/

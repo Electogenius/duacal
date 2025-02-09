@@ -11,35 +11,8 @@
 <body>
 	<div id="main">
 		<div id="box">
-		    <input id="tare" autocapitalize="off"></input>
+		    <input id="tare" ty autocapitalize="off"></input>
 		    <div id="output"></div>
-			<table style="display:none">
-				<tr id="row1">
-				</tr>
-				<tr id="row2"></tr>
-				<tr id="row3">
-					<td>1</td>
-					<td>2</td>
-					<td>3</td>
-				</tr>
-				<tr id="row4">
-					<td>4</td>
-					<td>5</td>
-					<td>6</td>
-				</tr>
-				<tr id="row5">
-					<td>7</td>
-					<td>8</td>
-					<td>9</td>
-				</tr>
-				<tr id="row6">
-					<td>.</td>
-					<td>0</td>
-					<td>Ans</td>
-					<td></td>
-					<td>=</td>
-				</tr>
-			</table>
 		</div>
 	</div>
 
@@ -52,9 +25,11 @@
 		output.ondblclick=()=>tare.value = ""
 		function calc(){
 		    try{
-		    let val = evaluate(parser(tokenize(tare.value, log), log)).str()
-		    output.innerText = val
+		        let log = a=>{throw a}
+		        let val = evaluate(parser(tokenize(tare.value, log), log)).str()
+		        output.innerText = val
 		    }catch(e){
+		        console.error(e)
 		        output.innerText = "Err"
 		    }
 		}
